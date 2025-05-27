@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sold Tickets Tracker</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 480px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    color: #FFC107;
+  }
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+  }
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: none;
+    background-color: #222;
+    color: #eee;
+    font-size: 1rem;
+  }
+  button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    background: #FFC107;
+    color: #121212;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #E6AC00;
+  }
+  table {
+    width: 100%;
+    margin-top: 24px;
+    border-collapse: collapse;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px 8px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+  }
+  th {
+    background-color: #FFB300;
+    color: #fff;
+  }
+  tbody tr:hover {
+    background-color: #333;
+  }
+  .count {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 1.2rem;
+    color: #0f0;
+    font-weight: 700;
+  }
+  .action-btn {
+    background: #f33;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .action-btn:hover {
+    background: #d11;
+  }
+</style>
+</head>
+<body>
+
+<h1>Sold Tickets Tracker</h1>
+
+<label for="ticketNumber">Ticket Number (1000-1100)</label>
+<input type="number" id="ticketNumber" min="1000" max="1100" placeholder="Enter ticket number" />
+
+<label for="soldTo">Sold To (Buyer Name)</label>
+<input type="text" id="soldTo" placeholder="Enter buyer name" />
+
+<label for="soldFor">Sold For (₱)</label>
+<input type="number" id="soldFor" min="0" placeholder="Enter amount sold for" />
+
+<button id="addSoldTicketBtn">Add Sold Ticket</button>
+
+<table aria-label="Sold tickets list">
+  <thead>
+    <tr>
+      <th>Ticket #</th>
+      <th>Sold To</th>
+      <th>Sold For (₱)</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="soldTicketsTableBody">
+    <!-- Rows get added here -->
+  </tbody>
+</table>
+
+<p class="count">Total Tickets Sold: <span id="totalSoldCount">0</span></p>
+
+<script>
+  const soldTickets = JSON.parse(localStorage.getItem('soldTickets')) || [];
+
+  function saveSoldTickets() {
+    localStorage.setItem('soldTickets', JSON.stringify(soldTickets));
+  }
+
+  function renderSoldTickets() {
+    const tbody = document.getElementById('soldTicketsTableBody');
+    tbody.innerHTML = '';
+
+    soldTickets.forEach((ticket, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${ticket.number}</td>
+        <td>${ticket.soldTo}</td>
+        <td>₱${ticket.soldFor}</td>
+        <td><button class="action-btn" onclick="removeSoldTicket(${index})">Delete</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('totalSoldCount').textContent = soldTickets.length;
+  }
+
+  function removeSoldTicket(index) {
+    if (confirm('Remove this sold ticket record?')) {
+      soldTickets.splice(index, 1);
+      saveSoldTickets();
+      renderSoldTickets();
+    }
+  }
+
+  document.getElementById('addSoldTicketBtn').addEventListener('click', () => {
+    const ticketNumberInput = document.getElementById('ticketNumber');
+    const soldToInput = document.getElementById('soldTo');
+    const soldForInput = document.getElementById('soldFor');
+
+    const ticketNumber = parseInt(ticketNumberInput.value);
+    const soldTo = soldToInput.value.trim();
+    const soldFor = parseInt(soldForInput.value);
+
+    if (!ticketNumber || ticketNumber < 1000 || ticketNumber > 1100) {
+      alert('Please enter a valid ticket number between 1000 and 1100.');
+      return;
+    }
+    if (!soldTo) {
+      alert('Please enter the buyer name.');
+      return;
+    }
+    if (!soldFor || soldFor < 0) {
+      alert('Please enter a valid amount sold for.');
+      return;
+    }
+    if (soldTickets.some(t => t.number === ticketNumber)) {
+      alert('This ticket number is already marked as sold.');
+      return;
+    }
+
+    soldTickets.push({ number: ticketNumber, soldTo, soldFor });
+    saveSoldTickets();
+    renderSoldTickets();
+
+    ticketNumberInput.value = '';
+    soldToInput.value = '';
+    soldForInput.value = '';
+  });
+
+  // Initial render
+  renderSoldTickets();
+</script>
+
+</body>
+</html>
