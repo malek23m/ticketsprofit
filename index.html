@@ -25,7 +25,7 @@
 
   .container {
     max-width: 500px;
-    margin: 30px 16px;
+    margin: 30px auto;
     padding: 24px;
     background-color: #1b1b1b;
     border-radius: 14px;
@@ -42,12 +42,14 @@
   input[type="text"], input[type="number"] {
     width: 100%;
     padding: 12px;
+    padding-inline: 16px; /* ADDED horizontal space inside input */
     margin-top: 6px;
     border-radius: 8px;
     border: none;
     background-color: #2b2b2b;
     color: #eee;
     font-size: 1rem;
+    box-sizing: border-box; /* Prevents input overflow */
     transition: 0.2s ease;
   }
 
