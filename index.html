@@ -6,64 +6,64 @@
 <title>Sold Tickets Tracker</title>
 <style>
   body {
-    background-color: #121212;
-    color: #eee;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 480px;
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    font-family: sans-serif;
+    max-width: 500px;
     margin: 20px auto;
     padding: 20px;
   }
   h1 {
     text-align: center;
-    color: #FFC107;
+    color: #DAA520;
   }
   label {
     display: block;
     margin-top: 12px;
-    font-weight: 600;
+    font-weight: bold;
   }
-  input[type="text"], input[type="number"] {
+  input[type="text"],
+  input[type="number"] {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     margin-top: 6px;
-    border-radius: 6px;
+    border-radius: 4px;
     border: none;
-    background-color: #222;
-    color: #eee;
+    background-color: #2a2a2a;
+    color: #fff;
     font-size: 1rem;
   }
   button {
     margin-top: 20px;
-    padding: 12px;
+    padding: 10px;
     width: 100%;
-    background: #FFC107;
-    color: #121212;
+    background: #DAA520;
+    color: #1a1a1a;
     font-weight: bold;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
+    font-size: 1rem;
   }
   button:hover {
-    background: #E6AC00;
+    background: #B8860B;
   }
   table {
     width: 100%;
     margin-top: 24px;
     border-collapse: collapse;
-    background-color: #1e1e1e;
-    border-radius: 8px;
+    background-color: #262626;
+    border-radius: 6px;
     overflow: hidden;
   }
   th, td {
-    padding: 12px 8px;
+    padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #444;
   }
   th {
-    background-color: #FFB300;
-    color: #fff;
+    background-color: #DAA520;
+    color: #000;
   }
   tbody tr:hover {
     background-color: #333;
@@ -71,21 +71,20 @@
   .count {
     text-align: center;
     margin-top: 16px;
-    font-size: 1.2rem;
-    color: #0f0;
-    font-weight: 700;
+    font-size: 1.1rem;
+    color: #8f8;
+    font-weight: bold;
   }
   .action-btn {
-    background: #f33;
+    background: #cc4444;
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 6px 10px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 600;
   }
   .action-btn:hover {
-    background: #d11;
+    background: #aa2222;
   }
 </style>
 </head>
@@ -93,7 +92,7 @@
 
 <h1>Sold Tickets Tracker</h1>
 
-<label for="ticketNumber">Ticket Number (1000-1100)</label>
+<label for="ticketNumber">Ticket Number (1000–1100)</label>
 <input type="number" id="ticketNumber" min="1000" max="1100" placeholder="Enter ticket number" />
 
 <label for="soldTo">Sold To (Buyer Name)</label>
@@ -104,7 +103,7 @@
 
 <button id="addSoldTicketBtn">Add Sold Ticket</button>
 
-<table aria-label="Sold tickets list">
+<table>
   <thead>
     <tr>
       <th>Ticket #</th>
@@ -114,7 +113,7 @@
     </tr>
   </thead>
   <tbody id="soldTicketsTableBody">
-    <!-- Rows get added here -->
+    <!-- Rows will appear here -->
   </tbody>
 </table>
 
@@ -188,7 +187,6 @@
     soldForInput.value = '';
   });
 
-  // Initial render
   renderSoldTickets();
 </script>
 
